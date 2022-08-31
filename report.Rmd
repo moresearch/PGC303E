@@ -65,28 +65,9 @@ library(knitr)
 library(magrittr)
 library(kableExtra)
 data<-read.csv("DATA/all.csv")
-#data <- tibble::rowid_to_column(data, "index")
-
-#data %>% 
-#kbl(booktabs = T) %>%
-#kable_styling(latex_options = "striped")
-
-
-#kable(data, "latex") %>%
-#  column_spec(1, width = "10em")
-
 
 pander::pander(data)
 
-#kable('pdf', digits = 2) %>%
-#  column_spec(1, bold = T, width = "2600em") %>% 
-#  kable_styling(bootstrap_options = c("striped", "hover")) %>%
-#  scroll_box(width = "2000px")
-
-#kable(data,)
-#kable(data, caption="A table")
-#country <- read.table("DATA/all.csv")
-#country
 ```
 \newpage
 
@@ -154,7 +135,6 @@ plotpage("total.lines")
 ## Total Lines 
 ![alt total.files](FIG/total.lines.png)
 \newpage
-
 
 # Future work
 Further development of toolkit as more usecases arise.

@@ -7,16 +7,13 @@ domain_path="./DATALAKE/$domain"
 csv="./DATA/$domain.csv"
 datafile="$domain.csv"
 datafile_path=$domain_path/$datafile
-#datafile_path=$data_path/$datafile
 
 tmp_file=$(mktemp)
-#echo "tmpfile here: $tmp_file"
 echo "\"domain\", \"project\"", "\"total.files.changed\"", "\"total.lines.added\"", "\"total.lines.deleted\"", "\"total.lines\"", "\"lines.deleted.added.ratio\"" > $tmp_file
 
 # loop over current DIR
 for owner_path in $domain_path/*; do
     if [ -d "$owner_path" ]; then
-        #echo "LOG: in owner: [$owner_path] and pwd: [$PWD]\n"
         # loop over each owner's project dirs
         for project_path in $owner_path/*; do
             if [ -d "$project_path" ]; then
@@ -24,18 +21,13 @@ for owner_path in $domain_path/*; do
                 #project="atom"
                 project=$project_path
                 cd $project; 
-        #        echo "now in [$project] and pwd: [$PWD]\n"
-
-                #project= $(echo $project | awk -F '[/:]' '{print $5"/"$6}')
                 project=$(echo $project | grep -oP "(?<=$domain/)[^ ]*")
 
                 git config diff.renameLimit 999999;
                 git log --shortstat |\
                     grep -E "fil(e|es) changed" |\
                     awk -v domain=$domain -v project=$project '{domain; project; files+=$1; inserted+=$4; deleted+=$6; delta+=$4-$6; ratio=deleted/inserted} END {printf "\x22%s\x22, \x22%s\x22, \x22%s\x22, \x22%s\x22, \x22%s\x22, \x22%s\x22, \x22%.10f\x22\n", domain, project, files, inserted, deleted, delta, ratio }' - >> $tmp_file 
-                #cd -; 
                 cd - > /dev/null;
-                #echo "$PWD"
             fi
         done
     fi
